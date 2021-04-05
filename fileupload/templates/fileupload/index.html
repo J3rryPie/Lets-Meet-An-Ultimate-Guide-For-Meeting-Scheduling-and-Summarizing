@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mini-Project</title>
+
+  <!-- CSS  -->
+  
+    <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css\style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <!-- <nav class="white" role="navigation">
+    <div class="nav-wrapper container"> -->
+      <!-- <a id="logo-container" href="#" class="brand-logo">Flash Summarizer</a> -->
+      <!-- <div class="parallax"> -->
+      <!-- </div> -->
+      <!-- <ul id="nav-mobile" class="sidenav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav> -->
+  <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <br><br>
+        <h1 class="header center red-text text-lighten-2">Flash Summarizer</h1>
+        <!-- <img src="{% static 'Logo.jpg' %}" alt="Flash Summarizer Logo" width="200px" height="200px" float='left'> -->
+        <div class="row center">
+          <img src="{% static 'Logo.jpg' %}" alt="Flash Summarizer Logo" width="200px" height="200px" float='center'>
+          <h5 class="header col s12 dark">A Powerful Meeting Summarizer using NLP</h5>
+        </div>
+        <div class="row center">
+          <a href="/../upload" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
+        </div>
+        <br><br>
+
+      </div>
+    </div>
+    <div class="parallax"><img src="{% static 'background1.jpg' %}" alt="Unsplashed background img 1"></div>
+  </div>
+
+
+  <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">One Touch Meet Summarization</h5>
+
+            <p class="light">We did most of the heavy lifting for you to provide a easy to use tool for summarizing any online meeting. Additionally, we refined the whole notes making expirence to provide student a smooth lecture expirence.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+            <h5 class="center">User Experience Focused</h5>
+
+            <p class="light">By utilizing elements and principles of Machine Learning and Natural Language Processing, we were able to create a framework that incorporates document frequency and inverse frequency and cosine that provide more accurate summary to users.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Easy to work with</h5>
+
+            <p class="light">We have provided smooth UI and documnetation to help new users get started. We are also always open to feedback and can answer any questions a user may have about Flash Summarizer.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 black-text">The most efficient and user-friendly meet summarizer . </h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="{% static 'background2.jpg' %}" alt="Unsplashed background img 2"></div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+
+      <div class="row">
+        <div class="col s12 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>Description</h4>
+          <p class="left-align light">Using Googles Speech to text for the transcript of the meet and then using NLTK, Numpy, Networkk and Pandas to convert the provided transcript to a short and effective summary using NLP .</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 dark">Machine Learning Mini-Project turned into an Actual Site !!</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="{% static 'background3.jpg' %}" alt="Unsplashed background img 3"></div>
+  </div>
+
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Team Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students from S.P.I.T working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Site Map</h5>
+          <ul>
+            <li><a class="white-text" href="#">About us</a></li>
+            <li><a class="white-text" href="/upload">Upload here</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="https://github.com/J3rryPie/!">Project Code</a></li>
+            <li><a class="white-text" href="https://www.linkedin.com/in/aayush-kawathekar-ba182b201/!">LinkedIn</a></li>
+            <li><a class="white-text" href="https://github.com/J3rryPie/!">Github</a></li>
+            <li><a class="white-text" href="https://www.hackerrank.com/AayushKawathekar?hr_r=1">HackerRank</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="brown-text text-lighten-3" href="https://github.com/J3rryPie/!">Aayush,Vedant,Smrithi </a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+
+  </body>
+</html>
