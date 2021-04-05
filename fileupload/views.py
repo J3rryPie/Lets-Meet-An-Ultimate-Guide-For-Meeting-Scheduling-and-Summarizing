@@ -185,7 +185,9 @@ def text_paste_view(request):
                     # print('lollll')
                     # print(cnt)
                     # print(scores.get(cnt))
-                    scores1[sentence] = score + titlewords + math.sqrt(idf_score)#+scores.get(cnt)*factor
+                    scores1[sentence] = score + titlewords + math.sqrt(idf_score)
+                    print(scores1)
+                    #+scores.get(cnt)*factor
                     # scores1.get(sentence) = score + titlewords + math.sqrt(idf_score)+scores[cnt]*factor
                     # print('idf_score') 
                     # print(math.sqrt(idf_score))
