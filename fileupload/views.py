@@ -6,7 +6,11 @@ import nltk
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
-
+import matplotlib.pyplot as plt
+import io
+import urllib, base64
+from PIL import Image
+from wordcloud import WordCloud,STOPWORDS
 # Create your views here.
 def welcome_view(request):
     return render(request,'fileupload/index.html')
@@ -17,13 +21,13 @@ def text_paste_view(request):
             text_form.save(commit=False)
             text_form.name = 'mini-project'
             text_form.save()
-            trans=text_form.cleaned_data['transcript']
+            transs=text_form.cleaned_data['transcript']
             context={
-                'trans':trans
+                'trans':transs
             }
             with open('mini_project.txt', 'w') as f:
                 myfile = File(f)
-                myfile.write(trans)
+                myfile.write(transs)
             from nltk.cluster.util import cosine_distance
             import numpy as np
             import networkx as nx
@@ -98,14 +102,29 @@ def text_paste_view(request):
             tk1 = [stemmer.stem(w) for w in tk1 if w not in stopwords]
             tk2 = [stemmer.stem(w) for w in tk2 if w not in stopwords]
             tk3 = [stemmer.stem(w) for w in tk3 if w not in stopwords]
-
+            # print('loltk1')
+            # print(tk1)
+            mask_array=np.array(Image.open("fileupload\static\cloud.png"))
+            wc = WordCloud(background_color = '#bdbdbd', max_words=200000,mask=mask_array)
+            wc=wc.generate(text1)
+            # plt.show()
+            plt.figure(figsize= (10,5))
+            plt.imshow(wc,interpolation= 'bilinear')
+            plt.axis("off")
+            image = io.BytesIO()
+            plt.savefig('fileupload/static/image.png', format='png')
+            image.seek(0)  # rewind the data
+            string = base64.b64encode(image.read())
+            image_64 = 'data:image/png;base64,' + urllib.parse.quote(string)
+            # b=bytes(image_64,'base'
+            # print('lenstr')
+            # print(string)
+            # imgdata = base64.b64decode(image_64+ b'===')
+            # context={'wordcloud':image_64}
             # OWN - find word frequencies
             index1 = nltk.FreqDist(tk1)
             index2 = nltk.FreqDist(tk2)
             index3 = nltk.FreqDist(tk3)
-            # print('lol')
-            # print(index1['maggi'])
-            # print('lol ends')
             # OWN - document frequencies
             comb = list(index1.keys())
             comb.extend(index2.keys())
@@ -258,8 +277,31 @@ def text_paste_view(request):
 
             # Step 5 - Offcourse, output the summarize texr
             # print("Summarize Text: \n", ". ".join(summarize_text))
+            # from rouge_score import rouge_score
+            from rouge import Rouge
+            rouge = Rouge()
+            string_output=''
+            string_output=string_output.join(summarize_text)
+            scores_rouge = rouge.get_scores(transs,string_output)
+            scores_rouge_2=rouge.get_scores(string_output,transs)
+            print('rouge of transcript and summary')
+            print(scores_rouge)
+            print(scores_rouge_2)
+            from summarizer import Summarizer
+            model = Summarizer()
+            result = model(transs, min_length=30)
+            bert_summary = "".join(result)
+            rouge = Rouge()
+            scores_rouge = rouge.get_scores(bert_summary,string_output)
+            scores_rouge_2 = rouge.get_scores(string_output,bert_summary)
+            print(bert_summary)
+            print('rouge of bert summarizer and summary')
+            print(scores_rouge)
+            print(scores_rouge_2)
             context={
                 'summary': summarize_text,
+                'bert_output': bert_summary,
+                'wordcloud':image_64,
             }
             #to-do
             # max (of rec (calculated below) should equals iska max score sentence)
@@ -318,6 +360,7 @@ def text_paste_view(request):
             for sentence in scores3.keys():
                 if scores3[sentence] >= 8:
                     print(sentence)
+            
             return render(request,'fileupload/output.html',context)
     else:
         form=TextForm()
