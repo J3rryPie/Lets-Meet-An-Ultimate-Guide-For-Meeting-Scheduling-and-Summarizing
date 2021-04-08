@@ -278,11 +278,11 @@ def text_paste_view(request):
             # Step 5 - Offcourse, output the summarize texr
             # print("Summarize Text: \n", ". ".join(summarize_text))
             # from rouge_score import rouge_score
-            # from rouge import Rouge
-            # rouge = Rouge()
-            # string_output=''
-            # string_output=string_output.join(summarize_text)
-            # scores_rouge = rouge.get_scores(transs,string_output)
+            from rouge import Rouge
+            rouge = Rouge()
+            string_output=''
+            string_output=string_output.join(summarize_text)
+            scores_rouge = rouge.get_scores(transs,string_output)
             # scores_rouge_2=rouge.get_scores(string_output,transs)
             # print('rouge of transcript and summary')
             # print(scores_rouge)
@@ -310,10 +310,12 @@ def text_paste_view(request):
             with open('summary.txt', 'w') as f:
                 myfile = File(f)
                 myfile.write(string_output) 
+            
             context={
                 'summary': summarize_text,
                 # 'bert_output': bert_summary,
                 # 'wordcloud':image_64,
+                'rouge_output':scores_rouge,
             }
             #to-do
             # max (of rec (calculated below) should equals iska max score sentence)
