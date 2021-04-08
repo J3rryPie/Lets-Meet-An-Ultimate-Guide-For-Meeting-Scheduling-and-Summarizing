@@ -152,7 +152,7 @@ def text_paste_view(request):
             sent3 = sent_tokenize(text3)
 
             # OWN - create word list of title
-            t1 = 'gift of magi'
+            t1 = text_form.cleaned_data['title']
             t2 = 'the skylight room'
             t3 = 'the cactus'
             title1 = [stemmer.stem(w.lower()) for w in tokenizer.tokenize(t1) if w.isalpha() and w not in stopwords]
@@ -278,30 +278,42 @@ def text_paste_view(request):
             # Step 5 - Offcourse, output the summarize texr
             # print("Summarize Text: \n", ". ".join(summarize_text))
             # from rouge_score import rouge_score
-            from rouge import Rouge
-            rouge = Rouge()
+            # from rouge import Rouge
+            # rouge = Rouge()
+            # string_output=''
+            # string_output=string_output.join(summarize_text)
+            # scores_rouge = rouge.get_scores(transs,string_output)
+            # scores_rouge_2=rouge.get_scores(string_output,transs)
+            # print('rouge of transcript and summary')
+            # print(scores_rouge)
+            # print(scores_rouge_2)
+            # from summarizer import Summarizer
+            # model = Summarizer()
+            # result = model(transs, min_length=30)
+            # bert_summary = "".join(result)
+            # rouge = Rouge()
+            # scores_rouge = rouge.get_scores(bert_summary,string_output)
+            # scores_rouge_2 = rouge.get_scores(string_output,bert_summary)
+            # print(bert_summary)
+            # print('rouge of bert summarizer and summary')
+            # print(scores_rouge)
+            # print(scores_rouge_2)
+            # from transformers import pipeline
+            # Initialize the HuggingFace summarization pipeline
+            # summarizer = pipeline("summarization")
+            # summarized = summarizer(transs, min_length=75, max_length=300)
+            # bert_summary=summarized
+            # # Print summarized text
+            # print(summarized)
             string_output=''
             string_output=string_output.join(summarize_text)
-            scores_rouge = rouge.get_scores(transs,string_output)
-            scores_rouge_2=rouge.get_scores(string_output,transs)
-            print('rouge of transcript and summary')
-            print(scores_rouge)
-            print(scores_rouge_2)
-            from summarizer import Summarizer
-            model = Summarizer()
-            result = model(transs, min_length=30)
-            bert_summary = "".join(result)
-            rouge = Rouge()
-            scores_rouge = rouge.get_scores(bert_summary,string_output)
-            scores_rouge_2 = rouge.get_scores(string_output,bert_summary)
-            print(bert_summary)
-            print('rouge of bert summarizer and summary')
-            print(scores_rouge)
-            print(scores_rouge_2)
+            with open('summary.txt', 'w') as f:
+                myfile = File(f)
+                myfile.write(string_output) 
             context={
                 'summary': summarize_text,
-                'bert_output': bert_summary,
-                'wordcloud':image_64,
+                # 'bert_output': bert_summary,
+                # 'wordcloud':image_64,
             }
             #to-do
             # max (of rec (calculated below) should equals iska max score sentence)
@@ -368,3 +380,39 @@ def text_paste_view(request):
             'form':form
         }
         return render(request,"fileupload/input.html",context)
+
+
+def analysis_view(request):
+    context={}
+    f=open ("mini_project.txt","r")
+    transs=''
+    for x in f:
+        transs= transs.join(x)
+    # print(transs)
+    f=open ("summary.txt","r")
+    string_output=''
+    for x in f:
+        string_output= string_output.join(x)
+    # print(string_output)
+    from rouge import Rouge
+    rouge = Rouge()
+    scores_rouge = rouge.get_scores(transs,string_output)
+    from summarizer import Summarizer
+    model = Summarizer()
+    result = model(transs, min_length=30)
+    bert_summary = "".join(result)
+    rouge = Rouge()
+    scores_rouge = rouge.get_scores(bert_summary,string_output)
+    from transformers import pipeline
+    # Initialize the HuggingFace summarization pipeline
+    summarizer = pipeline("summarization")
+    summarized = summarizer(transs, min_length=75, max_length=300)
+    # Print summarized text
+    context={
+        'bert_output': bert_summary,
+        'hugging_face_output':summarized,
+        'rouge_output':scores_rouge,
+    }    
+
+    return render(request,"fileupload/analysis.html",context)
+
