@@ -1,1 +1,1 @@
-This is the standard version that comes with both the minified and unminified CSS and JavaScript files.Use this if you are unfamiliar with Sass
+Delivered by Tactiq.io Highlights 02:02  Decision, Action Item: (Aayush Kawathekar) I can't say, it's just going on a problem with my Transcript 00:00 Aayush Kawathekar: Hello.00:06 Aayush Kawathekar: I can't hear you.

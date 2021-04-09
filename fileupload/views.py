@@ -61,10 +61,6 @@ def text_paste_view(request):
             #OWN
             import os
             import math
-            # from os import listdir, system
-            # print(os.getcwd())
-            # os.system('cd sample_data')
-            # os.chdir('sample_data')
             import nltk
             from nltk.tokenize import RegexpTokenizer, sent_tokenize
             from nltk.corpus import stopwords
@@ -73,15 +69,12 @@ def text_paste_view(request):
             import matplotlib.pyplot as plt
 
             stopwords = stopwords.words('english')
-
+            stopwords.append('Aayush')
+            stopwords.append('Kawathekar')
             tokenizer = RegexpTokenizer(r'\w+')
 
             stemmer = SnowballStemmer('english')
-            # print(os.system('ls -lS'))
-            # print(os.getcwd())
             f1 = open('mini_project.txt')
-            # f2 = open('the-skylight-room.txt')
-            # f3 = open('the-cactus.txt')
 
             # OWN - read the files
             text1 = f1.read()
@@ -102,13 +95,9 @@ def text_paste_view(request):
             tk1 = [stemmer.stem(w) for w in tk1 if w not in stopwords]
             tk2 = [stemmer.stem(w) for w in tk2 if w not in stopwords]
             tk3 = [stemmer.stem(w) for w in tk3 if w not in stopwords]
-            # print('loltk1')
-            # print(tk1)
             mask_array=np.array(Image.open("fileupload\static\cloud.png"))
             wc = WordCloud(background_color = '#bdbdbd', max_words=200000,mask=mask_array)
             wc=wc.generate(text1)
-            # plt.show()
-            plt.figure(figsize= (10,5))
             plt.imshow(wc,interpolation= 'bilinear')
             plt.axis("off")
             image = io.BytesIO()
@@ -116,11 +105,6 @@ def text_paste_view(request):
             image.seek(0)  # rewind the data
             string = base64.b64encode(image.read())
             image_64 = 'data:image/png;base64,' + urllib.parse.quote(string)
-            # b=bytes(image_64,'base'
-            # print('lenstr')
-            # print(string)
-            # imgdata = base64.b64decode(image_64+ b'===')
-            # context={'wordcloud':image_64}
             # OWN - find word frequencies
             index1 = nltk.FreqDist(tk1)
             index2 = nltk.FreqDist(tk2)
@@ -130,7 +114,6 @@ def text_paste_view(request):
             comb.extend(index2.keys())
             comb.extend(index3.keys())
             cindex = nltk.FreqDist(comb)
-            # print(cindex['maggi'])
             # OWN - split document into sentences
             sent1 = sent_tokenize(text1)
             tsent=len(sent1)
@@ -138,27 +121,19 @@ def text_paste_view(request):
             idf={}
             for sentence in sent1:
                 words = tokenizer.tokenize(sentence)
-                # words = [stemmer.stem(w.lower()) for w in words if w.isalpha() and not w.isdigit()]
             for word in words:
                 cnt_idf=index1[word]
                 cnt_idf=(math.log(1+tsent/1+cnt_idf)+1)*index1[word]
-                # print(cnt_idf)
                 if(word in idf):
                     idf[word]+=cnt_idf
                 else:
                     idf[word]=cnt_idf
-            # print(idf)
             sent2 = sent_tokenize(text2)
             sent3 = sent_tokenize(text3)
 
             # OWN - create word list of title
             t1 = text_form.cleaned_data['title']
-            t2 = 'the skylight room'
-            t3 = 'the cactus'
             title1 = [stemmer.stem(w.lower()) for w in tokenizer.tokenize(t1) if w.isalpha() and w not in stopwords]
-            title2 = [stemmer.stem(w.lower()) for w in tokenizer.tokenize(t2) if w.isalpha() and w not in stopwords]
-            title3 = [stemmer.stem(w.lower()) for w in tokenizer.tokenize(t3) if w.isalpha() and w not in stopwords]
-
             similarity_matrix = np.zeros((len(sent1), len(sent1)))
             for idx1 in range(len(sent1)):
                 for idx2 in range(len(sent1)):
@@ -181,10 +156,8 @@ def text_paste_view(request):
                     # OWN - find all words in the sentence
                     words = tokenizer.tokenize(sentence)
                     words = [stemmer.stem(w.lower()) for w in words if w.isalpha() and not w.isdigit()]
-                # score = 0.0
                     score = 0.0
                     titlewords = 0.0
-                # idf_score=0.0
                     idf_score = 0.0
                     cnt=-1
                     for word in words:
@@ -195,25 +168,10 @@ def text_paste_view(request):
                         if word in title1:
                             titlewords += 1
                         if word in idf:
-                            # print(word)
                             idf_score += (idf[word]*idf[word])
-                    # idf_score += idf[word]*idf[word]
                     # OWN - number of words in sentence / number of those words present in title
                     titlewords = 0.1 * titlewords / len(title1)
-                    # scores1.add(sentence,score + titlewords + math.sqrt(idf_score)+scores[cnt]*factor)
-                    # print('lollll')
-                    # print(cnt)
-                    # print(scores.get(cnt))
                     scores1[sentence] = score + titlewords + math.sqrt(idf_score)
-                    print(scores1)
-                    #+scores.get(cnt)*factor
-                    # scores1.get(sentence) = score + titlewords + math.sqrt(idf_score)+scores[cnt]*factor
-                    # print('idf_score') 
-                    # print(math.sqrt(idf_score))
-            # print('score1')
-            # print(scores1)
-            # print('score one ends')
-
             scores2 = {}
             sentence_lengths2 = []
             for sentence in sent2:
@@ -257,54 +215,14 @@ def text_paste_view(request):
                     # OWN - number of words in sentence / number of those words present in title
                     titlewords = 0.1 * titlewords / len(title3)
                     scores3[sentence] = score + titlewords
-
-            # print(scores3)
-            # similarity_matrix = np.zeros((len(sent1), len(sent1)))
-            # for idx1 in range(len(sent1)):
-            #     for idx2 in range(len(sent1)):
-            #         if idx1 == idx2: #ignore if both are same sentences
-            #             continue 
-            #         similarity_matrix[idx1][idx2] = sentence_similarity(sent1[idx1], sent1[idx2])
-            # sentence_similarity_graph = nx.from_numpy_array(similarity_matrix)
-            # scores = nx.pagerank(sentence_similarity_graph)
-            # # print(scores)
-            # # Step 4 - Sort the rank and pick top sentences
-            # ranked_sentence = sorted(((scores[i],s) for i,s in enumerate(sent1)), reverse=True)    
-            # print("Indexes of top ranked_sentence order are ", ranked_sentence)    
             summarize_text = []
             for i in range(2):
                 summarize_text.append("".join(ranked_sentence[i][1]))
-
-            # Step 5 - Offcourse, output the summarize texr
-            # print("Summarize Text: \n", ". ".join(summarize_text))
-            # from rouge_score import rouge_score
             from rouge import Rouge
             rouge = Rouge()
             string_output=''
             string_output=string_output.join(summarize_text)
             scores_rouge = rouge.get_scores(transs,string_output)
-            # scores_rouge_2=rouge.get_scores(string_output,transs)
-            # print('rouge of transcript and summary')
-            # print(scores_rouge)
-            # print(scores_rouge_2)
-            # from summarizer import Summarizer
-            # model = Summarizer()
-            # result = model(transs, min_length=30)
-            # bert_summary = "".join(result)
-            # rouge = Rouge()
-            # scores_rouge = rouge.get_scores(bert_summary,string_output)
-            # scores_rouge_2 = rouge.get_scores(string_output,bert_summary)
-            # print(bert_summary)
-            # print('rouge of bert summarizer and summary')
-            # print(scores_rouge)
-            # print(scores_rouge_2)
-            # from transformers import pipeline
-            # Initialize the HuggingFace summarization pipeline
-            # summarizer = pipeline("summarization")
-            # summarized = summarizer(transs, min_length=75, max_length=300)
-            # bert_summary=summarized
-            # # Print summarized text
-            # print(summarized)
             string_output=''
             string_output=string_output.join(summarize_text)
             with open('summary.txt', 'w') as f:
@@ -313,66 +231,34 @@ def text_paste_view(request):
             
             context={
                 'summary': summarize_text,
-                # 'bert_output': bert_summary,
-                # 'wordcloud':image_64,
                 'rouge_output':scores_rouge,
             }
             #to-do
             # max (of rec (calculated below) should equals iska max score sentence)
-
-
-            '''
-            print scores1
             sorted1 = sorted(scores1.items(), key = operator.itemgetter(1))
-            print sorted1[-10:]
-            f, axarr = plt.subplots(2, 2)
-            axarr[0, 0].hist(scores1.values(), bins = 30)
-            axarr[0, 0].set_title("Sentence lengths histogram")
-            # axarr[0, 0].xlabel('Number of characters')
-            # axarr[0, 0].ylabel('Number of sentences')
-            # axarr[0, 0].show()
-            axarr[0, 1].hist(scores2.values(), bins = 30)
-            axarr[0, 1].set_title("Sentence lengths histogram")
-            # axarr[0, 1].xlabel('Number of characters')
-            # axarr[0, 1].ylabel('Number of sentences')
-            # axarr[0, 1].show()
-            axarr[1, 0].hist(scores3.values(), bins = 30)
-            axarr[1, 0].set_title("Sentence lengths histogram")
-            # axarr[1, 0].xlabel('Number of characters')
-            # axarr[1, 0].ylabel('Number of sentences')
-            plt.show()
-            '''
-
+            fig,ax = plt.subplots(1,1)
+            ax.hist(scores1.values(), bins = 30)
+            ax.set_title("Sentence lengths histogram")
+            ax.set_xlabel('Number of characters')
+            ax.set_ylabel('Number of sentences')
+            image = io.BytesIO()
+            ax.figure.savefig('fileupload/static/histogram.png', format='png')
+            image.seek(0)  # rewind the data
+            string = base64.b64encode(image.read())
+            image_64 = 'data:histogram/png;base64,' + urllib.parse.quote(string)
             # OWN - print the summary generated for each story
             res = 0
             max=0
             for val in scores1.values():
                 if(val > max):
                     max=val
-                    res += val
-            
+                    res += val            
             # using len() to get total keys for mean computation
             if(len(scores1)!=0):
                res = res / len(scores1)
             res=res+(max-res)/2
-            # print(res)
-            #
-
-            # print(scores1)
-            # print('gift of magi')
-
             for sentence in scores1.keys():
                 if scores1[sentence] >= res:
-                    print(sentence)
-
-            #print('\n\nthe skylight room')
-            for sentence in scores2.keys():
-                if scores2[sentence] >= 20:
-                    print(sentence)
-
-            #print('\n\nthe cactus')
-            for sentence in scores3.keys():
-                if scores3[sentence] >= 8:
                     print(sentence)
             
             return render(request,'fileupload/output.html',context)
@@ -390,12 +276,10 @@ def analysis_view(request):
     transs=''
     for x in f:
         transs= transs.join(x)
-    # print(transs)
     f=open ("summary.txt","r")
     string_output=''
     for x in f:
         string_output= string_output.join(x)
-    # print(string_output)
     from rouge import Rouge
     rouge = Rouge()
     scores_rouge = rouge.get_scores(transs,string_output)
@@ -405,14 +289,8 @@ def analysis_view(request):
     bert_summary = "".join(result)
     rouge = Rouge()
     scores_rouge = rouge.get_scores(bert_summary,string_output)
-    from transformers import pipeline
-    # Initialize the HuggingFace summarization pipeline
-    summarizer = pipeline("summarization")
-    summarized = summarizer(transs, min_length=75, max_length=300)
-    # Print summarized text
     context={
         'bert_output': bert_summary,
-        'hugging_face_output':summarized,
         'rouge_output':scores_rouge,
     }    
 
