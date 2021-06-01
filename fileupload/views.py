@@ -11,9 +11,22 @@ import io
 import urllib, base64
 from PIL import Image
 from wordcloud import WordCloud,STOPWORDS
-# Create your views here.
+# Create your views here
 def welcome_view(request):
     return render(request,'fileupload/index.html')
+def speech(request):
+    if request.method=='POST':
+        form=TextForm(request.POST)
+        context={
+            'form':form
+        }
+        return redirect('/upload')
+    else:
+        form=TextForm()
+        context={
+            'form':form
+        }
+        return render(request, 'fileupload/speech.html', context)
 def text_paste_view(request):
     if request.method== 'POST':
         text_form=TextForm(request.POST)

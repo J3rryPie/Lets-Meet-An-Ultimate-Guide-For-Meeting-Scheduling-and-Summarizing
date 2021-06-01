@@ -2,10 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from .models import employee,meeting
+from .models import employee,meeting,Meets
 from django import forms
 from django.db.models import F
-from .forms import AForm
+from .forms import Scheduler
+from django.http import HttpResponseRedirect
 # Create your views here.
 def register_view(request):
     if request.method == "POST":
@@ -90,3 +91,43 @@ def schedule_view(request,id):
         "all": all_meets,
     }
     return render(request,"employee/schedule.html",context)
+
+from django.conf import settings
+from django.core.mail import send_mail
+
+def scheduler_view(request,id):
+    context ={}  
+    if request.method == 'GET':
+        form=Scheduler()
+    # create object of form
+    else:
+        form = Scheduler(request.POST)  
+        # check if form data is valid
+        if form.is_valid():
+            # save the form data to model
+            t=form.cleaned_data.get('title')
+            st=form.cleaned_data.get('start_time')
+            et=form.cleaned_data.get('end_time')
+            p=form.cleaned_data.get('participants')
+            email=form.cleaned_data.get('email_id_of_participants')
+            email_list= email.split (",")
+            new_meeting=meeting(title=t,start_time=st,end_time=et,email_id_of_participants=email_list)            
+            print(email_list)
+            for i in p:
+                through_table=Meets(m=new_meeting,e=i)
+            subject = 'Invitation for a meeting'
+            message = f'You have been invited for a meeting at {new_meeting.start_time} about {new_meeting.title}.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list=[]
+            for i in email_list:
+                recipient_list.append(i)
+            print(recipient_list)
+            send_mail( subject, message, email_from, recipient_list )
+            form.save()  
+            return HttpResponseRedirect('/dashboard/{{id}}')
+    context['form']= form
+    return render(request, "employee/scheduler.html", context)
+
+
+
+

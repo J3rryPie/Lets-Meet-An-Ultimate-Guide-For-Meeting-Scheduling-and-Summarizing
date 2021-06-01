@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from fileupload.views import text_paste_view
 from fileupload.views import welcome_view
-from fileupload.views import analysis_view
-from employee.views import register_view,login_request,profile_view,dashboard_view,schedule_view
+from fileupload.views import analysis_view,speech
+from employee.views import register_view,login_request,profile_view,dashboard_view,schedule_view,scheduler_view
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 urlpatterns = [
@@ -31,6 +31,8 @@ urlpatterns = [
     path('profile/<int:id>/',profile_view),
     path('dashboard/<int:id>/',dashboard_view),
     path('schedule/<int:id>/',schedule_view),
+    path('scheduler/<int:id>',scheduler_view),
+    path('speech',speech),
     # path('output/',text_paste_view),
 ]
 
