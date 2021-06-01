@@ -32,7 +32,7 @@ urlpatterns = [
     path('dashboard/<int:id>/',dashboard_view),
     path('schedule/<int:id>/',schedule_view),
     path('scheduler/<int:id>',scheduler_view),
-    path('speech',speech),
+    path('speech/',speech),
     # path('output/',text_paste_view),
 ]
 

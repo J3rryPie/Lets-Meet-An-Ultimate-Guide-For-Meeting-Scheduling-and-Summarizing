@@ -3,6 +3,7 @@ from .forms import TextForm
 from .models import Text
 from django.core.files import File
 import nltk
+from django.http import HttpResponseRedirect
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -20,7 +21,7 @@ def speech(request):
         context={
             'form':form
         }
-        return redirect('/upload')
+        return HttpResponseRedirect('/upload')
     else:
         form=TextForm()
         context={

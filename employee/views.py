@@ -7,7 +7,7 @@ from django import forms
 from django.db.models import F
 from .forms import Scheduler
 from django.http import HttpResponseRedirect
-# Create your views here.
+# Create your views here
 def register_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
