@@ -43,7 +43,7 @@ def register_view(request):
 
 def login_request(request):
     if request.user.is_authenticated:
-        return redirect('../upload/')
+        return redirect('../dashboard/1/')
     if request.method == 'GET':
         print('fneriu44')
         form = AuthenticationForm()
@@ -58,7 +58,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect('../upload/')
+                return redirect('../dashboard/1/')
             else:
                 print("Can i get a hooyaa")
                 messages.error(request, "Invalid username or password.")
@@ -124,7 +124,7 @@ def scheduler_view(request,id):
             print(recipient_list)
             send_mail( subject, message, email_from, recipient_list )
             form.save()  
-            return HttpResponseRedirect('/dashboard/{{id}}')
+            return HttpResponseRedirect('/dashboard/1/')
     context['form']= form
     return render(request, "employee/scheduler.html", context)
 

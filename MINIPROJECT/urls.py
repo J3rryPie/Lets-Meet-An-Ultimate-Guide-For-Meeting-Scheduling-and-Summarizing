@@ -26,13 +26,13 @@ urlpatterns = [
     path('login/', login_request, name='login_view'),
     path('admin/', admin.site.urls),
     path('welcome/',welcome_view),
-    path('upload/',text_paste_view),
-    path('analysis/',analysis_view),
+    path('upload/<int:id>/',text_paste_view),
+    path('analysis/<int:id>/',analysis_view),
     path('profile/<int:id>/',profile_view),
     path('dashboard/<int:id>/',dashboard_view),
     path('schedule/<int:id>/',schedule_view),
     path('scheduler/<int:id>',scheduler_view),
-    path('speech/',speech),
+    path('speech/<int:id>/',speech),
     # path('output/',text_paste_view),
 ]
 
