@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from fileupload.views import landing_view
 from fileupload.views import text_paste_view
 from fileupload.views import welcome_view
 from fileupload.views import analysis_view
 urlpatterns = [
+    
     path('admin/', admin.site.urls),
     path('welcome/',welcome_view),
+    path('speech-text/',landing_view),
     path('upload/',text_paste_view),
     path('analysis/',analysis_view),
     # path('output/',text_paste_view),
