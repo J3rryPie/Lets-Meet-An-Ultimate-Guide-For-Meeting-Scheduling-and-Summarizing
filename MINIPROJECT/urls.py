@@ -28,7 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('welcome/',welcome_view),
     path('upload/<int:eid>/<int:mid>/',text_paste_view),
-    path('analysis/<int:id>/',analysis_view),
+    path('analysis/<int:eid>/<int:mid>/',analysis_view),
     path('profile/<int:id>/',profile_view),
     path('dashboard/<int:id>/',dashboard_view),
     path('schedule/<int:id>/',schedule_view),

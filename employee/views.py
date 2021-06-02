@@ -75,59 +75,77 @@ def profile_view(request, id):
         "con": obj,
     }
     return render(request, "employee/profile.html", context)
+    
 def dashboard_view(request,id):
-    obj = employee.objects.get(id=id)
-    all_meets = obj.meetings.values()
-    context={
-        "con":obj,
-        "all": all_meets,
-    }
-    return render(request,"employee/dashboard.html",context)
+    if request.user.is_authenticated is True:
+        if request.user.id is id:
+            obj = employee.objects.get(id=id)
+            all_meets = obj.meetings.values()
+            context={
+                "con":obj,
+                "all": all_meets,
+            }
+            return render(request,"employee/dashboard.html",context)
+        else:
+            return redirect(dashboard_view,request.user.id)
+    else:
+        return redirect(register_view)
 def schedule_view(request,id):
-    obj= employee.objects.get(id=id)
-    all_meets = obj.meetings.values()
-    context = {
-        "con": obj,
-        "all": all_meets,
-    }
-    return render(request,"employee/schedule.html",context)
-
+    if request.user.is_authenticated is True:
+        if request.user.id is id:
+            obj= employee.objects.get(id=id)
+            all_meets = obj.meetings.values()
+            context = {
+                "con": obj,
+                "all": all_meets,
+            }
+            return render(request,"employee/schedule.html",context)
+        else:
+            return redirect(schedule_view,request.user.id)
+    else:
+        return redirect(register_view)
 from django.conf import settings
 from django.core.mail import send_mail
 
 def scheduler_view(request,id):
-    context ={}  
-    if request.method == 'GET':
-        form=Scheduler()
-    # create object of form
+    if request.user.is_authenticated is True:
+        if request.user.id is id:
+            context ={}  
+            if request.method == 'GET':
+                form=Scheduler()
+            # create object of form
+            else:
+                form = Scheduler(request.POST)  
+                # check if form data is valid
+                if form.is_valid():
+                    # save the form data to model
+                    t=form.cleaned_data.get('title')
+                    st=form.cleaned_data.get('start_time')
+                    et=form.cleaned_data.get('end_time')
+                    p=form.cleaned_data.get('participants')
+                    # email=form.cleaned_data.get('email_id_of_participants')
+                    # email_list= email.split (",")
+                    new_meeting=meeting(title=t,start_time=st,end_time=et)            
+                    for i in p:
+                        through_table=Meets(m=new_meeting,e=i)
+                    subject = 'Invitation for a meeting'
+                    message = f'You have been invited for a meeting at {new_meeting.start_time} about {new_meeting.title} and here is the link {new_meeting.link}.'
+                    email_from = settings.EMAIL_HOST_USER
+                    recipient_list=[]
+                    # for i in email_list:
+                    #     recipient_list.append(i)
+                    # print(recipient_list)
+                    for i in p:
+                        recipient_list.append(i.email_id)
+                    send_mail( subject, message, email_from, recipient_list )
+                    form.save()  
+                    return redirect(dashboard_view,id)
+            context['form']= form
+            return render(request, "employee/scheduler.html", context)
+        else:
+            return redirect(scheduler_view,request.user.id)
     else:
-        form = Scheduler(request.POST)  
-        # check if form data is valid
-        if form.is_valid():
-            # save the form data to model
-            t=form.cleaned_data.get('title')
-            st=form.cleaned_data.get('start_time')
-            et=form.cleaned_data.get('end_time')
-            p=form.cleaned_data.get('participants')
-            # email=form.cleaned_data.get('email_id_of_participants')
-            # email_list= email.split (",")
-            new_meeting=meeting(title=t,start_time=st,end_time=et)            
-            for i in p:
-                through_table=Meets(m=new_meeting,e=i)
-            subject = 'Invitation for a meeting'
-            message = f'You have been invited for a meeting at {new_meeting.start_time} about {new_meeting.title} and here is the link {new_meeting.link}.'
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list=[]
-            # for i in email_list:
-            #     recipient_list.append(i)
-            # print(recipient_list)
-            for i in p:
-                recipient_list.append(i.email_id)
-            send_mail( subject, message, email_from, recipient_list )
-            form.save()  
-            return redirect(dashboard_view,id)
-    context['form']= form
-    return render(request, "employee/scheduler.html", context)
+        return redirect(register_view)
 
 
 
