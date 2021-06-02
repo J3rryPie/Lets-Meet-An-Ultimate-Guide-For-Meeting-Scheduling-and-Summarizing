@@ -3,6 +3,7 @@ from .forms import TextForm
 from .models import Text
 from django.core.files import File
 import nltk
+from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -16,20 +17,23 @@ from employee.models import meeting
 # Create your views here
 def welcome_view(request):
     return render(request,'fileupload/index.html')
-def speech(request,id):
+def speech(request,eid,mid):
     if request.method=='POST':
         form=TextForm(request.POST)
         context={
             'form':form
         }
-        return HttpResponseRedirect('/upload/1/')
+        return redirect(text_paste_view,eid,mid)
     else:
         form=TextForm()
         context={
-            'form':form
+            'form':form,
+            "eid":eid,
+            "mid":mid
+
         }
         return render(request, 'fileupload/speech.html', context)
-def text_paste_view(request,id):
+def text_paste_view(request,eid,mid):
     if request.method== 'POST':
         text_form=TextForm(request.POST)
         if text_form.is_valid():
@@ -116,7 +120,7 @@ def text_paste_view(request,id):
             plt.imshow(wc,interpolation= 'bilinear')
             plt.axis("off")
             image = io.BytesIO()
-            plt.savefig('fileupload/static/image.png', format='png')
+            # plt.savefig('fileupload/static/image.png', format='png')
             image.seek(0)  # rewind the data
             string = base64.b64encode(image.read())
             image_64 = 'data:image/png;base64,' + urllib.parse.quote(string)
@@ -247,8 +251,10 @@ def text_paste_view(request,id):
             context={
                 'summary': summarize_text,
                 'rouge_output':scores_rouge,
+                'mid':mid,
+                'eid':'eid',
             }
-            m = meeting.objects.get(id=id)
+            m = meeting.objects.get(id=mid)
             m.summary=summarize_text
             m.save()
             #to-do
@@ -278,7 +284,8 @@ def text_paste_view(request,id):
             for sentence in scores1.keys():
                 if scores1[sentence] >= res:
                     print(sentence)
-            
+            plt.close()
+            # fig.close()
             return render(request,'fileupload/output.html',context)
     else:
         form=TextForm()

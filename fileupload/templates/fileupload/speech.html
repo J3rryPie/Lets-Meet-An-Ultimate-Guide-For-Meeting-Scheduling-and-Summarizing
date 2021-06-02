@@ -231,7 +231,9 @@
               <!-- <span class="card-title">Transcript</span>  -->
         <form action="." method='POST'>{% csrf_token %}
         <!-- {{ form.transcript }} -->
+        <a href="../../../upload/{{eid}}/{{mid}}/">
         <input class="btn waves-effect waves-dark" type="submit" name="action"></input>
+        </a>
     </form> 
     </div>
     </div>

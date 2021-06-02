@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+
 # Create your models here.
 class employee(models.Model):
     profile = models.TextField()
@@ -17,9 +18,10 @@ class employee(models.Model):
 
 class meeting(models.Model):
     title = models.CharField(max_length=20)
-    start_time = models.DateTimeField(blank=True,null=True)
+    date = models.DateField(blank=True,null=True)
+    start_time = models.TimeField(blank=True,null=True)
     color = models.CharField(max_length=10,default='Black')
-    end_time = models.DateTimeField(blank=True,null=True)
+    end_time = models.TimeField(blank=True,null=True)
     summary = models.TextField(blank=True)
     participants = models.ManyToManyField(employee,through='Meets')
     email_id_of_participants = models.CharField(max_length=100,null=True,blank=True)

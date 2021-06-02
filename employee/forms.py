@@ -1,6 +1,6 @@
 from .models import employee
 from django import forms
-  
+from django.contrib.admin.widgets import AdminDateWidget,AdminTimeWidget, AdminSplitDateTime  
 # import GeeksModel from models.py
 from .models import meeting
   
@@ -9,4 +9,9 @@ class Scheduler(forms.ModelForm):
     # specify the name of model to use
     class Meta:
         model = meeting
-        fields = 'title','start_time','end_time','participants','email_id_of_participants','link',
+        fields = 'title','date','start_time','end_time','participants','link'
+        widgets ={
+            'start_time' : AdminTimeWidget(),
+            'end_time' : AdminTimeWidget(),
+            'date' : AdminDateWidget(),
+        }

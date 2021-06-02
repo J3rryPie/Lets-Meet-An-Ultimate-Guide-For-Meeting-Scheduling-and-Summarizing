@@ -109,22 +109,23 @@ def scheduler_view(request,id):
             st=form.cleaned_data.get('start_time')
             et=form.cleaned_data.get('end_time')
             p=form.cleaned_data.get('participants')
-            email=form.cleaned_data.get('email_id_of_participants')
-            email_list= email.split (",")
-            new_meeting=meeting(title=t,start_time=st,end_time=et,email_id_of_participants=email_list)            
-            print(email_list)
+            # email=form.cleaned_data.get('email_id_of_participants')
+            # email_list= email.split (",")
+            new_meeting=meeting(title=t,start_time=st,end_time=et)            
             for i in p:
                 through_table=Meets(m=new_meeting,e=i)
             subject = 'Invitation for a meeting'
-            message = f'You have been invited for a meeting at {new_meeting.start_time} about {new_meeting.title}.'
+            message = f'You have been invited for a meeting at {new_meeting.start_time} about {new_meeting.title} and here is the link {new_meeting.link}.'
             email_from = settings.EMAIL_HOST_USER
             recipient_list=[]
-            for i in email_list:
-                recipient_list.append(i)
-            print(recipient_list)
+            # for i in email_list:
+            #     recipient_list.append(i)
+            # print(recipient_list)
+            for i in p:
+                recipient_list.append(i.email_id)
             send_mail( subject, message, email_from, recipient_list )
             form.save()  
-            return HttpResponseRedirect('/dashboard/1/')
+            return redirect(dashboard_view,id)
     context['form']= form
     return render(request, "employee/scheduler.html", context)
 

@@ -5,7 +5,16 @@
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <title>Meeting Calender</title>
-      
+      <script>
+      function CopyToClipboard(id)
+            {
+                var r = document.createRange();
+                r.selectNode(document.getElementById(id));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(r);
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+            } </script>
       <!-- Favicon -->
       <link rel="shortcut icon" href="http://iqonic.design/themes/calendify/html/assets/images/favicon.ico" />
       
@@ -195,10 +204,11 @@
                                                 <p class="mb-4 card-description">{{event.summary}}</p>
                                                 <div class="d-flex align-items-center pt-4">
                                                     <a href="#" class="btn btn-danger mr-3 px-xl-4">{{event.end_time }} : {{event.start_time}}</a>
-                                                    <a href="{{event.link}}" class="btn btn-outline-danger copy d-none px-xl-4" data-extra-toggle="copy" title="Copy to clipboard" data-toggle="tooltip"><i class="las la-link pr-2"></i>Copy Link</a>
+                                                    <!-- <span id='link'>{{event.link}}</span> -->
+                                                    <a onclick="CopyToClipboard('link')" ;return false; class="btn btn-outline-danger copy d-none px-xl-4" data-extra-toggle="copy" title="Copy to clipboard" data-toggle="tooltip"><i class="las la-link pr-2"></i>Copy Link</a>
                                                     <a href="#" class="btn btn-outline-danger turn-on px-xl-4">Turn On</a>
                                                 </div>
-                                                <a href="../../../speech/1/" class= "mb-2 btn btn-outline-danger copy d-none px-xl-4" >Summarize The Meeting</a>
+                                                <a href="../../../speech/{{con.id}}/{{event.id}}/" class= "mb-2 btn btn-outline-danger copy d-none px-xl-4" >Summarize The Meeting</a>
                                             </div>
                                             <div class="card-header-toolbar mt-1">
                                                 <div class="dropdown d-none">
