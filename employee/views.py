@@ -123,9 +123,10 @@ def scheduler_view(request,id):
                     st=form.cleaned_data.get('start_time')
                     et=form.cleaned_data.get('end_time')
                     p=form.cleaned_data.get('participants')
+                    l= form.cleaned_data.get('link')
                     # email=form.cleaned_data.get('email_id_of_participants')
                     # email_list= email.split (",")
-                    new_meeting=meeting(title=t,start_time=st,end_time=et)            
+                    new_meeting=meeting(title=t,start_time=st,end_time=et,link=l)           
                     for i in p:
                         through_table=Meets(m=new_meeting,e=i)
                     subject = 'Invitation for a meeting'

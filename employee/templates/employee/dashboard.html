@@ -122,7 +122,7 @@
                                       </div>
                                   </li>
                                   <li class="caption-content">
-                                      <a href="/profile/{{con.name}}/" class="search-toggle dropdown-toggle d-flex align-items-center" id="dropdownMenuButton3" data-toggle="dropdown"
+                                      <a href="/profile/{{con.id}}/" class="search-toggle dropdown-toggle d-flex align-items-center" id="dropdownMenuButton3" data-toggle="dropdown"
                                           aria-haspopup="true" aria-expanded="false">
                                           <img src="{% static 'images/03.jpg' %}" class="avatar-40 img-fluid rounded" alt="user">
                                           <div class="caption ml-3">
@@ -204,7 +204,7 @@
                                                 <p class="mb-4 card-description">{{event.summary}}</p>
                                                 <div class="d-flex align-items-center pt-4">
                                                     <a href="#" class="btn btn-danger mr-3 px-xl-4">{{event.date}} => {{event.end_time }} : {{event.start_time}}</a>
-                                                    <!-- <span id='link'>{{event.link}}</span> -->
+                                                    <span id='link'>{{event.link}}</span>
                                                     <a onclick="CopyToClipboard('link')" ;return false; class="btn btn-outline-danger copy d-none px-xl-4" data-extra-toggle="copy" title="Copy to clipboard" data-toggle="tooltip"><i class="las la-link pr-2"></i>Copy Link</a>
                                                     <a href="#" class="btn btn-outline-danger turn-on px-xl-4">Turn On</a>
                                                 </div>
