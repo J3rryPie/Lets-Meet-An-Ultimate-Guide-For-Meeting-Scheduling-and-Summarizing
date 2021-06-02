@@ -3,6 +3,7 @@ from .forms import TextForm
 from .models import Text
 from django.core.files import File
 import nltk
+from django.http import HttpResponseRedirect
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -11,12 +12,24 @@ import io
 import urllib, base64
 from PIL import Image
 from wordcloud import WordCloud,STOPWORDS
-# Create your views here.
+from employee.models import meeting
+# Create your views here
 def welcome_view(request):
     return render(request,'fileupload/index.html')
-def landing_view(request):
-    return render(request,'fileupload/speech-text.html')
-def text_paste_view(request):
+def speech(request,id):
+    if request.method=='POST':
+        form=TextForm(request.POST)
+        context={
+            'form':form
+        }
+        return HttpResponseRedirect('/upload/1/')
+    else:
+        form=TextForm()
+        context={
+            'form':form
+        }
+        return render(request, 'fileupload/speech.html', context)
+def text_paste_view(request,id):
     if request.method== 'POST':
         text_form=TextForm(request.POST)
         if text_form.is_valid():
@@ -235,6 +248,9 @@ def text_paste_view(request):
                 'summary': summarize_text,
                 'rouge_output':scores_rouge,
             }
+            m = meeting.objects.get(id=id)
+            m.summary=summarize_text
+            m.save()
             #to-do
             # max (of rec (calculated below) should equals iska max score sentence)
             sorted1 = sorted(scores1.items(), key = operator.itemgetter(1))
@@ -297,3 +313,4 @@ def analysis_view(request):
     }    
 
     return render(request,"fileupload/analysis.html",context)
+
