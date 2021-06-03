@@ -1,6 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% block content %}
 {% load static %}
-
+ 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,10 +9,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shoelace-css/1.0.0-beta16/shoelace.css">
         <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
         <link href="{% static 'css\style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
-		<title>Speech to Text</title>
-	</head>
-	<body>
-		<div id="index-banner" class="parallax-container">
+    <title>Speech to Text</title>
+  </head>
+  <body>
+    <div id="index-banner" class="parallax-container">
       <div class="section no-pad-bot">
         <div class="container">
           <br>               
@@ -20,9 +20,9 @@
           <br><br>           
         </div>
       </div>
-      <div style=" position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;"><img src="{% static 'background6.jpg' %}" alt="Unsplashed background img 1"></div>
+      <div style=" position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;"><img src="https://s29843.pcdn.co/blog/wp-content/uploads/sites/2/2018/02/Marketing-Campaign_Blog-Images_Best-Microphone-e1540233042276-768x571.jpg" style="width:100%;height:100%" alt="Unsplashed background img 1"></div>
     </div>
-
+ 
   <div class="container">
       <div class="app"> 
           <h5 style="font-family:comic sans MS;">Click on start recording to record the meeting</h5>
@@ -41,7 +41,7 @@
                   <p class="no-notes">You don't have any notes.</p>
               </li>
           </ul>
-
+ 
       </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -76,14 +76,14 @@
         
           recognition.continuous = true;
           
-
+ 
           recognition.onresult = function(event) {
           
-
+ 
             var current = event.resultIndex;
-
+ 
             var transcript = event.results[current][0].transcript;
-
+ 
             var mobileRepeatBug = (current == 1 && transcript == event.results[0][0].transcript);
           
             if(!mobileRepeatBug) {
@@ -145,12 +145,12 @@
           notesList.on('click', function(e) {
             e.preventDefault();
             var target = $(e.target);
-
+ 
             if(target.hasClass('listen-note')) {
               var content = target.closest('.note').find('.content').text();
               readOutLoud(content);
             }
-
+ 
             if(target.hasClass('delete-note')) {
               var dateTime = target.siblings('.date').text();  
               deleteNote(dateTime);
@@ -161,7 +161,7 @@
           
           function readOutLoud(message) {
               var speech = new SpeechSynthesisUtterance();
-
+ 
               speech.text = message;
               speech.volume = 1;
               speech.rate = 1;
@@ -169,7 +169,7 @@
             
               window.speechSynthesis.speak(speech);
           }
-
+ 
           
           function renderNotes(notes) {
             var html = '';
@@ -221,22 +221,20 @@
             localStorage.removeItem('note-' + dateTime); 
           }
          localStorage.length
-
-
+ 
+ 
         
-		</script>
-        <div class="input-field col s8">
-            <div class="card blue-grey darken-2n">
-            <div class="card-content white-text">
+    </script>
+        <div >
+            <div >
+            <div >
               <!-- <span class="card-title">Transcript</span>  -->
         <form action="." method='POST'>{% csrf_token %}
         <!-- {{ form.transcript }} -->
-        <a href="../../../upload/{{eid}}/{{mid}}/">
-        <input class="btn waves-effect waves-dark" type="submit" name="action"></input>
-        </a>
+        <input class="free-quote-form-text-field w-node-_510b33d8-85d8-f8e6-4c8f-17e0c34f12c8-89807d44 w-input" style="height:35px; width:150px;margin-left:auto;margin-right:auto;display:block;margin-bottom:0%;font-size : 20px; position:relative; padding-bottom:25px; padding-top:10px" type="submit" name="action"></input>
     </form> 
     </div>
     </div>
     </div>
-	</body>
+  </body>
 {% endblock %}

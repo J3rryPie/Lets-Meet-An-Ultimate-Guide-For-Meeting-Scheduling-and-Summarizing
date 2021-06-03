@@ -19,7 +19,7 @@ from django.urls import path
 from fileupload.views import text_paste_view
 from fileupload.views import welcome_view
 from fileupload.views import analysis_view,speech
-from employee.views import register_view,login_request,profile_view,dashboard_view,schedule_view,scheduler_view
+from employee.views import register_view,login_request,profile_view,dashboard_view,schedule_view,scheduler_view,logout_view
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 urlpatterns = [
@@ -35,7 +35,7 @@ urlpatterns = [
     path('scheduler/<int:id>/',scheduler_view),
     path('speech/<int:eid>/<int:mid>/',speech),
     path('jsi18',JavaScriptCatalog.as_view(),name='js-catlog'),
-
+    path('logout/',logout_view),
 ]
 
 # urlpatterns += staticfiles_urlpatterns()

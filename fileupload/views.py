@@ -299,7 +299,9 @@ def text_paste_view(request,eid,mid):
             else:
                 form=TextForm()
                 context={
-                    'form':form
+                    'form':form,
+                    'mid':mid,
+                    "eid":eid
                 }
                 return render(request,"fileupload/input.html",context)
         else:

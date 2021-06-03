@@ -40,6 +40,11 @@ def register_view(request):
                   context={"form": form})
 
 
+def logout_view(request):
+    logout(request)
+    messages.info(request, "Logged out successfully!")
+    return redirect("../welcome/")
+
 
 def login_request(request):
     if request.user.is_authenticated:

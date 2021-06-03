@@ -111,11 +111,13 @@
                                       <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
                                           <div class="card shadow-none m-0">
                                               <div class="card-body p-0 ">
+                                                  <a href="../../../logout/">
                                                   <div class="cust-title p-3">
-                                                      <h5 class="mb-0">Notifications</h5>
+                                                      <h5 class="mb-0">Logout</h5>
                                                   </div>
+                                                  </a>
                                                   <a class="right-ic btn-block position-relative p-3 border-top text-center" href="#" role="button">
-                                                      See All Notification
+                                                      Logout Now
                                                   </a>
                                               </div>
                                           </div>
@@ -204,7 +206,7 @@
                                                 <p class="mb-4 card-description">{{event.summary}}</p>
                                                 <div class="d-flex align-items-center pt-4">
                                                     <a href="#" class="btn btn-danger mr-3 px-xl-4">{{event.date}} => {{event.end_time }} : {{event.start_time}}</a>
-                                                    <span id='link'>{{event.link}}</span>
+                                                    <!-- <span id='link'>{{event.link}}</span> -->
                                                     <a onclick="CopyToClipboard('link')" ;return false; class="btn btn-outline-danger copy d-none px-xl-4" data-extra-toggle="copy" title="Copy to clipboard" data-toggle="tooltip"><i class="las la-link pr-2"></i>Copy Link</a>
                                                     <a href="#" class="btn btn-outline-danger turn-on px-xl-4">Turn On</a>
                                                 </div>
